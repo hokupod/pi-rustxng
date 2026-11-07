@@ -24,8 +24,15 @@ function host() {
   const events = new Map();
   const messages = [];
   return {
-    registrations, commands, events, messages,
-    pi: { registerMcpServer: (...args) => registrations.push(args), registerCommand: (name, config) => commands.set(name, config), on: (name, handler) => events.set(name, handler) },
+    registrations,
+    commands,
+    events,
+    messages,
+    pi: {
+      registerMcpServer: (...args) => registrations.push(args),
+      registerCommand: (name, config) => commands.set(name, config),
+      on: (name, handler) => events.set(name, handler),
+    },
     ctx: { ui: { notify: (...args) => messages.push(args) } },
   };
 }
@@ -62,7 +69,15 @@ test('missing installation loads, guides setup, and only installs on explicit co
   const { home, createBinary, command } = await fixture(t);
   const h = host();
   let installs = 0;
-  extension(h.pi, { env: {}, home, install: async () => { installs++; await createBinary(); return { command, reused: installs > 1 }; } });
+  extension(h.pi, {
+    env: {},
+    home,
+    install: async () => {
+      installs++;
+      await createBinary();
+      return { command, reused: installs > 1 };
+    },
+  });
   assert.equal(installs, 0);
   assert.equal(h.registrations.length, 0);
   await h.events.get('session_start')({}, h.ctx);
@@ -77,7 +92,13 @@ test('missing installation loads, guides setup, and only installs on explicit co
 test('an explicit override is never silently replaced by installer', async (t) => {
   const { home } = await fixture(t);
   const h = host();
-  extension(h.pi, { env: { PI_RUSTXNG_BIN: 'relative' }, home, install: () => { throw new Error('Must not install'); } });
+  extension(h.pi, {
+    env: { PI_RUSTXNG_BIN: 'relative' },
+    home,
+    install: () => {
+      throw new Error('Must not install');
+    },
+  });
   await h.commands.get('rustxng-install').handler('', h.ctx);
   assert.match(h.messages.at(-1)[0], /unset the override/);
   assert.equal(h.registrations.length, 0);
@@ -87,11 +108,15 @@ test('install errors are visible and retries can succeed', async (t) => {
   const { home, command, createBinary } = await fixture(t);
   const h = host();
   let attempt = 0;
-  extension(h.pi, { env: {}, home, install: async () => {
-    if (++attempt === 1) throw new Error('checksum failure');
-    await createBinary();
-    return { command, reused: false };
-  } });
+  extension(h.pi, {
+    env: {},
+    home,
+    install: async () => {
+      if (++attempt === 1) throw new Error('checksum failure');
+      await createBinary();
+      return { command, reused: false };
+    },
+  });
   await h.commands.get('rustxng-install').handler('', h.ctx);
   assert.match(h.messages.at(-1)[0], /checksum failure/);
   assert.equal(h.registrations.length, 0);
@@ -107,7 +132,13 @@ test('requires native MCP registration support', () => {
 test('installer command rejects arguments before downloading', async (t) => {
   const { home } = await fixture(t);
   const h = host();
-  extension(h.pi, { env: {}, home, install: () => { throw new Error('Must not download'); } });
+  extension(h.pi, {
+    env: {},
+    home,
+    install: () => {
+      throw new Error('Must not download');
+    },
+  });
   await h.commands.get('rustxng-install').handler('--latest', h.ctx);
   assert.equal(h.messages.at(-1)[0], 'Usage: /rustxng-install');
   assert.equal(h.registrations.length, 0);
@@ -118,8 +149,19 @@ test('concurrent install commands perform one download and one registration', as
   const h = host();
   let finish;
   let count = 0;
-  const waiting = new Promise((resolve) => { finish = resolve; });
-  extension(h.pi, { env: {}, home, install: async () => { count++; await waiting; await createBinary(); return { command, reused: false }; } });
+  const waiting = new Promise((resolve) => {
+    finish = resolve;
+  });
+  extension(h.pi, {
+    env: {},
+    home,
+    install: async () => {
+      count++;
+      await waiting;
+      await createBinary();
+      return { command, reused: false };
+    },
+  });
   const first = h.commands.get('rustxng-install').handler('', h.ctx);
   await h.commands.get('rustxng-install').handler('', h.ctx);
   assert.match(h.messages.at(-1)[0], /already running/);

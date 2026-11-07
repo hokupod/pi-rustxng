@@ -4,19 +4,19 @@
 
 RustXNG v0.30.0 の公式 standalone executable を使用します。
 
-| 環境 | 公式 artifact の target |
-| --- | --- |
-| macOS Apple Silicon | aarch64-apple-darwin |
-| macOS Intel | x86_64-apple-darwin |
-| Linux x64 | x86_64-unknown-linux-musl |
-| Linux arm64 | aarch64-unknown-linux-gnu |
-| Windows x64 | x86_64-pc-windows-msvc |
+| 環境                | 公式 artifact の target   |
+| ------------------- | ------------------------- |
+| macOS Apple Silicon | aarch64-apple-darwin      |
+| macOS Intel         | x86_64-apple-darwin       |
+| Linux x64           | x86_64-unknown-linux-musl |
+| Linux arm64         | aarch64-unknown-linux-gnu |
+| Windows x64         | x86_64-pc-windows-msvc    |
 
-Linux arm64 は glibc 2.39 以上が必要です。Linux x64 は musl 版を選択します。その他の OS と CPU は installer が拒否します。マニフェストへの掲載は、その環境で本拡張を実機検証済みという意味ではありません。
+Linux arm64 は glibc 2.39 以上が必要です。Linux x64 は musl 版を選択します。その他の OS と CPU は installer が拒否します。マニフェストへの掲載はその環境で本拡張を実機検証済みという意味ではありません。
 
 ## プロセスとツール
 
-拡張は Pi に `rustxng` という名前で、次の引数を登録します。
+拡張は Pi に `rustxng` という名前で次の引数を登録します。
 
 ```text
 mcp --profile standard --config <package>/config/settings.toml
@@ -48,9 +48,9 @@ Pi の built-in MCP を無効化している場合や、別拡張で置き換え
 
 installer は固定 URL の公式 release asset を取得し、固定サイズと SHA-256 を確認します。バイナリの `.sha256` sidecar も固定ハッシュとファイル名に照合します。LICENSE と NOTICE も固定サイズと SHA-256 を確認します。
 
-各ダウンロードは 180 秒で timeout します。受信サイズに上限があります。検証済みファイルを一時ディレクトリに揃えてから、バージョンディレクトリへ rename します。失敗した新規導入は公開せず、一時ファイルを削除します。同時インストールで別の処理が先に完了した場合は、その導入を検証して再利用します。
+各ダウンロードは 180 秒でタイムアウトします。受信サイズに上限があります。検証済みファイルを一時ディレクトリに揃えてから、バージョンディレクトリへ rename します。失敗した新規導入は公開せず、一時ファイルを削除します。同時インストールで別の処理が先に完了した場合は、その導入を検証して再利用します。
 
-SHA-256 は完全性の確認です。同じ GitHub release にある checksum は、独立した署名や発行元の別経路での認証ではありません。実行ファイルの権限付与は、installer が作ったファイルだけが対象です。sudo、Gatekeeper の回避、システムのセキュリティ設定変更は行いません。
+SHA-256 は完全性の確認です。同じ GitHub release にある checksum は、独立した署名や発行元の別経路での認証ではありません。実行ファイルの権限付与はinstaller が作ったファイルだけが対象です。sudo、Gatekeeper の回避、システムのセキュリティ設定変更は行いません。
 
 ## 検証記録
 

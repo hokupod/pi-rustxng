@@ -1,0 +1,22 @@
+{
+  "safeChain": {
+    "version": "1.5.24",
+    "releaseUrl": "https://github.com/AikidoSec/safe-chain/releases/tag/1.5.24",
+    "discovery": "standard-user-install",
+    "relativeExecutable": ".safe-chain/bin/safe-chain",
+    "allowEnvironmentOverride": false,
+    "assets": {
+      "darwin-arm64": "safe-chain-macos-arm64",
+      "darwin-x64": "safe-chain-macos-x64",
+      "linux-arm64": "safe-chain-linux-arm64",
+      "linux-x64": "safe-chain-linux-x64"
+    },
+    "sha256": {
+      "darwin-arm64": "638932561b1e5e93affbe442567c4144795d0993a83022df02d7833495279f5a",
+      "darwin-x64": "6f7c770207bf518f1cabc4ad550a6bf12fb5c746fec468eddc854074ac381e8f",
+      "linux-arm64": "55f205678c8881d586b5803b2e6ae97f19b5667108aa588e94378db22483fa1b",
+      "linux-x64": "5eaba0fb4557c96b6826e1ed9ce0904efb317c9fc43386ad5b7b3282c05446c0"
+    }
+  },
+  "gitleaksVersion": "8.30.1"
+}

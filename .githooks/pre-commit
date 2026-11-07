@@ -1,0 +1,6 @@
+#!/bin/sh
+set -eu
+node scripts/secrets-check.mjs --staged
+node scripts/safe-chain.mjs npm run format:check
+node scripts/safe-chain.mjs npm run lint
+node --test

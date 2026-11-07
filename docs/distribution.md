@@ -1,6 +1,6 @@
 # ライセンスと配布方針
 
-pi-rustxng のライセンスは、RustXNG に合わせた **AGPL-3.0-or-later** です。[LICENSE](../LICENSE) を参照してください。
+pi-rustxng のライセンスはRustXNG に合わせた **AGPL-3.0-or-later** です。[LICENSE](../LICENSE) を参照してください。
 
 本リポジトリとパッケージは RustXNG バイナリを同梱しません。利用者が明示的に installer を実行すると、[RustXNG v0.30.0 の公式 release](https://github.com/sahenjp/RustXNG/releases/tag/v0.30.0) から、その環境のバイナリと LICENSE、NOTICE を取得します。RustXNG のソースは [v0.30.0 のソースツリー](https://github.com/sahenjp/RustXNG/tree/v0.30.0) にあります。
 

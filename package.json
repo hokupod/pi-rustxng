@@ -4,10 +4,48 @@
   "description": "RustXNG web search and page reading through Pi's native MCP support",
   "type": "module",
   "license": "AGPL-3.0-or-later",
-  "engines": { "node": ">=22" },
-  "keywords": ["pi-package", "rustxng", "mcp", "search"],
-  "repository": { "type": "git", "url": "https://github.com/hokupod/pi-rustxng.git" },
-  "files": ["src", "scripts", "config", "docs", "LICENSE", "README.md"],
-  "scripts": { "test": "node --test", "install:rustxng": "node scripts/install-rustxng.mjs" },
-  "pi": { "extensions": ["./src/extension.mjs"] }
+  "engines": {
+    "node": ">=22"
+  },
+  "keywords": [
+    "pi-package",
+    "rustxng",
+    "mcp",
+    "search"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hokupod/pi-rustxng.git"
+  },
+  "files": [
+    "src",
+    "scripts/install-rustxng.mjs",
+    "config",
+    "docs",
+    "LICENSE",
+    "README.md",
+    "README.ja.md"
+  ],
+  "scripts": {
+    "test": "node --test",
+    "install:rustxng": "node scripts/install-rustxng.mjs",
+    "safe": "node scripts/safe-chain.mjs",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint . --max-warnings 0",
+    "check": "node scripts/check.mjs",
+    "secrets:check": "node scripts/secrets-check.mjs",
+    "hooks:install": "node scripts/install-hooks.mjs"
+  },
+  "pi": {
+    "extensions": [
+      "./src/extension.mjs"
+    ]
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "eslint": "10.14.0",
+    "globals": "17.13.0",
+    "prettier": "3.9.10"
+  }
 }

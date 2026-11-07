@@ -1,25 +1,27 @@
 # pi-rustxng
 
-[Pi](https://github.com/earendil-works/pi) から [RustXNG](https://github.com/sahenjp/RustXNG) の Web 検索とページ本文取得を使う拡張です。Pi の native MCP に stdio サーバーを登録します。
+[日本語](README.ja.md)
 
-## 導入する
+Use [RustXNG](https://github.com/sahenjp/RustXNG) web search and page reading in [Pi](https://github.com/earendil-works/pi). This extension registers a stdio server through Pi's native MCP support.
 
-Node.js 22 以上と、`pi.registerMcpServer` を提供する Pi が必要です。
+## Install
 
-1. 拡張をインストールします。
+You need Node.js 22 or later and a Pi version that provides `pi.registerMcpServer`.
+
+1. Install the extension.
 
    ```sh
    pi install git:github.com/hokupod/pi-rustxng
    ```
 
-2. Pi を起動します。起動済みなら `/reload` を実行します。
-3. Pi の入力欄で `/rustxng-install` を実行します。引数はありません。この操作で公式 GitHub release から RustXNG v0.30.0、LICENSE、NOTICE をダウンロードし、検証します。
-4. `/mcp` で `rustxng` の接続状態を確認します。登録完了の通知は接続成功を保証しません。
-5. Pi に「RustXNG で Rust の公式ドキュメントを検索して、結果のページ本文を読んで」と依頼します。
+2. Start Pi, or run `/reload` in an existing session.
+3. Run `/rustxng-install` in Pi without arguments. This command downloads and verifies RustXNG v0.30.0, LICENSE, and NOTICE from the official GitHub release.
+4. Open `/mcp` and check the `rustxng` connection. A registration notification does not guarantee a successful connection.
+5. Ask Pi to search with RustXNG and read a page from the results.
 
-拡張のロードだけではダウンロードしません。バイナリ未導入時も拡張はロードされ、導入方法を通知します。導入後は MCP サーバーを登録します。
+Loading the extension does not download anything. If RustXNG is missing, the extension loads and explains how to install it. After installation, it registers the MCP server.
 
-手元の checkout から導入する場合は次を実行します。
+To install from a local checkout, run:
 
 ```sh
 git clone https://github.com/hokupod/pi-rustxng.git
@@ -28,40 +30,41 @@ node scripts/install-rustxng.mjs
 pi install .
 ```
 
-バイナリの配置先は `~/.local/share/pi-rustxng/v0.30.0/rustxng` です。Windows のファイル名は `rustxng.exe` です。Windows でもホームディレクトリ以下の同じ `.local/share/pi-rustxng/v0.30.0` を使います。
+The binary is stored at `~/.local/share/pi-rustxng/v0.30.0/rustxng`. Windows uses `rustxng.exe` in the same `.local/share/pi-rustxng/v0.30.0` directory under your home directory.
 
-## 既存のバイナリを指定する
+## Use an existing binary
 
-独自に管理するバイナリには、起動前に `PI_RUSTXNG_BIN` を設定します。
+Set `PI_RUSTXNG_BIN` before starting Pi:
 
 ```sh
 PI_RUSTXNG_BIN="/absolute/path with spaces/rustxng" pi
 ```
 
-絶対パスの実行可能ファイルだけを受け付けます。`PATH` は検索しません。相対パス、空文字、ディレクトリ、実行不可ファイルは登録しません。override のバージョンと完全性は利用者が管理します。拡張は override のハッシュを検証しません。
+The extension accepts an absolute path to an executable file. It does not search `PATH`. It rejects relative paths, empty values, directories, and non-executable files. You manage the version and integrity of this binary. The extension does not verify its hash.
 
-`PI_RUSTXNG_BIN` が設定されている間、`/rustxng-install` は導入を行いません。管理対象バイナリに戻すには環境変数を解除して Pi を再起動します。
+While `PI_RUSTXNG_BIN` is set, `/rustxng-install` does not install the managed binary. To use the managed binary again, unset the variable and restart Pi.
 
-## 更新と削除
+## Update or remove
 
-RustXNG は v0.30.0 に固定しています。自動更新や `postinstall` はありません。`/rustxng-install` の再実行は、既存のバイナリと LICENSE、NOTICE を再検証して再利用します。
+RustXNG is pinned to v0.30.0. There is no automatic update or `postinstall` script. Running `/rustxng-install` again verifies and reuses the existing binary, LICENSE, and NOTICE.
 
-不完全または変更された既存ディレクトリは上書きしません。Pi を終了し、エラーで示されたバージョンディレクトリを別名に退避してから再実行します。既存データを保護するための動作です。
+The installer does not overwrite an incomplete or modified installation. Exit Pi, move the version directory shown in the error aside, and run the installer again.
 
-拡張を削除します。
+To remove the extension, run:
 
 ```sh
 pi remove git:github.com/hokupod/pi-rustxng
 ```
 
-ローカルパスから導入した場合は、`pi list` の該当パスを `pi remove` に渡します。Pi を終了後、不要になった `~/.local/share/pi-rustxng/v0.30.0` を削除するとバイナリも削除できます。
+For a local installation, pass the path shown by `pi list` to `pi remove`. After exiting Pi, remove `~/.local/share/pi-rustxng/v0.30.0` if you no longer need the binary.
 
-## 開発時の確認
+## Development
 
-```sh
-node --test
-```
+Follow [the development setup](docs/development.en.md) to install locked tools and enable repository-local checks. Run `node scripts/check.mjs` before publishing.
 
-テストは追加パッケージや外部接続を必要としません。実バイナリによる検索とページ取得は、導入後に Pi から別途確認します。
+The runtime has no package dependencies. Unit tests run with `node --test` without network access. Live search and page reading require a separate Pi integration check.
 
-[動作と制約](docs/reference.md) に対応環境、データ送信、MCP の制約を記載しています。[ライセンスと配布方針](docs/distribution.md) にバイナリ同梱の扱いを記載しています。
+## Documentation and license
+
+- [Behavior and limits](docs/reference.en.md) covers supported targets, processes, configuration, and data sent to external services.
+- [License and distribution](docs/distribution.en.md) explains the AGPL-3.0-or-later license and why binaries are downloaded rather than bundled.

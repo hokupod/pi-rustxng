@@ -1,0 +1,44 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { mkdtemp, writeFile, chmod, symlink, rm } from 'node:fs/promises';
+import { tmpdir, platform, arch } from 'node:os';
+import { join } from 'node:path';
+import { createHash } from 'node:crypto';
+import { validateSafeChainExecutable, assertSafeChainUnchanged } from '../scripts/safe-chain.mjs';
+async function fixture(t) {
+  const root = await mkdtemp(join(tmpdir(), 'pi-safe-chain-'));
+  t.after(() => rm(root, { recursive: true, force: true }));
+  const executable = join(root, 'safe-chain');
+  const content = '#!/bin/sh\necho "Current safe-chain version: test"\n';
+  await writeFile(executable, content);
+  await chmod(executable, 0o700);
+  const policy = {
+    safeChain: {
+      version: 'test',
+      sha256: { [`${platform()}-${arch()}`]: createHash('sha256').update(content).digest('hex') },
+    },
+  };
+  return { root, executable, policy };
+}
+test('safe-chain accepts exact digest and version, then detects replacement', async (t) => {
+  const { executable, policy } = await fixture(t);
+  const resolved = await validateSafeChainExecutable(executable, policy);
+  assert.equal(resolved.version, 'test');
+  await writeFile(executable, 'different');
+  await assert.rejects(assertSafeChainUnchanged(executable, resolved.identity), /changed/);
+});
+test('safe-chain refuses unverified content and symlinks before execution', async (t) => {
+  const { root, executable, policy } = await fixture(t);
+  policy.safeChain.sha256[`${platform()}-${arch()}`] = '0'.repeat(64);
+  await assert.rejects(validateSafeChainExecutable(executable, policy), /digest mismatch/);
+  const link = join(root, 'link');
+  await symlink(executable, link);
+  await assert.rejects(validateSafeChainExecutable(link, policy), /symbolic link/);
+});
+test('safe-chain refuses unsupported platforms and unexpected version', async (t) => {
+  const { executable, policy } = await fixture(t);
+  policy.safeChain.version = 'other';
+  await assert.rejects(validateSafeChainExecutable(executable, policy), /required/);
+  policy.safeChain.sha256 = {};
+  await assert.rejects(validateSafeChainExecutable(executable, policy), /no approved digest/);
+});
