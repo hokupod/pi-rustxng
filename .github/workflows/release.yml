@@ -24,7 +24,7 @@ jobs:
       - run: node scripts/check.mjs
       - run: node scripts/release-package.mjs pack
       - run: git diff --exit-code
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         with:
           name: npm-package
           path: .artifacts/release/
