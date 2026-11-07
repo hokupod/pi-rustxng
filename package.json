@@ -1,0 +1,13 @@
+{
+  "name": "pi-rustxng",
+  "version": "0.1.0",
+  "description": "RustXNG web search and page reading through Pi's native MCP support",
+  "type": "module",
+  "license": "AGPL-3.0-or-later",
+  "engines": { "node": ">=22" },
+  "keywords": ["pi-package", "rustxng", "mcp", "search"],
+  "repository": { "type": "git", "url": "https://github.com/hokupod/pi-rustxng.git" },
+  "files": ["src", "scripts", "config", "docs", "LICENSE", "README.md"],
+  "scripts": { "test": "node --test", "install:rustxng": "node scripts/install-rustxng.mjs" },
+  "pi": { "extensions": ["./src/extension.mjs"] }
+}
