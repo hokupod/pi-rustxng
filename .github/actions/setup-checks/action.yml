@@ -1,0 +1,27 @@
+name: Set up verified check tools
+description: Install pinned development tools on GitHub-hosted Linux x64
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: |
+        set -euo pipefail
+        test "$RUNNER_OS/$RUNNER_ARCH" = Linux/X64
+        mkdir -p "$HOME/.safe-chain/bin" "$RUNNER_TEMP/gitleaks"
+        curl --fail --location --proto '=https' --tlsv1.2 --retry 3 \
+          https://github.com/AikidoSec/safe-chain/releases/download/1.5.24/safe-chain-linux-x64 \
+          -o "$HOME/.safe-chain/bin/safe-chain"
+        echo "5eaba0fb4557c96b6826e1ed9ce0904efb317c9fc43386ad5b7b3282c05446c0  $HOME/.safe-chain/bin/safe-chain" | sha256sum --check
+        chmod 700 "$HOME/.safe-chain/bin/safe-chain"
+        curl --fail --location --proto '=https' --tlsv1.2 --retry 3 \
+          https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz \
+          -o "$RUNNER_TEMP/gitleaks.tar.gz"
+        echo "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb  $RUNNER_TEMP/gitleaks.tar.gz" | sha256sum --check
+        tar -xzf "$RUNNER_TEMP/gitleaks.tar.gz" -C "$RUNNER_TEMP/gitleaks" gitleaks
+        echo "GITLEAKS_BIN=$RUNNER_TEMP/gitleaks/gitleaks" >> "$GITHUB_ENV"
+    - shell: bash
+      run: node scripts/safe-chain.mjs npm install --global npm@11.18.0 --ignore-scripts --no-audit --no-fund
+    - shell: bash
+      run: |
+        test "$(npm --version)" = 11.18.0
+        node scripts/safe-chain.mjs npm ci --ignore-scripts --no-audit --no-fund
