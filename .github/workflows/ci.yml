@@ -1,7 +1,7 @@
 name: CI
 on:
   push:
-    branches: [main]
+    branches: [main, 'review/**']
   pull_request:
 permissions:
   contents: read
@@ -17,7 +17,21 @@ jobs:
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
         with:
           node-version: '24'
+          package-manager-cache: false
       - uses: ./.github/actions/setup-checks
       - run: node scripts/check.mjs
       - run: node scripts/release-package.mjs pack
       - run: git diff --exit-code
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: npm-package-check
+          path: .artifacts/release/
+          if-no-files-found: error
+          retention-days: 1
+      - run: mv .artifacts/release .artifacts/release-original
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333
+        with:
+          name: npm-package-check
+          path: .artifacts/release/
+      - run: node scripts/release-package.mjs verify
+      - run: diff -r .artifacts/release-original .artifacts/release
