@@ -1,9 +1,9 @@
 {
   "safeChain": {
-    "version": "1.5.24",
-    "releaseUrl": "https://github.com/AikidoSec/safe-chain/releases/tag/1.5.24",
-    "discovery": "standard-user-install",
-    "relativeExecutable": ".safe-chain/bin/safe-chain",
+    "version": "1.5.27",
+    "releaseUrl": "https://github.com/AikidoSec/safe-chain/releases/tag/1.5.27",
+    "discovery": "project-versioned-user-install",
+    "relativeExecutable": ".local/share/pi-rustxng/tools/safe-chain/1.5.27/safe-chain",
     "allowEnvironmentOverride": false,
     "assets": {
       "darwin-arm64": "safe-chain-macos-arm64",
@@ -12,10 +12,10 @@
       "linux-x64": "safe-chain-linux-x64"
     },
     "sha256": {
-      "darwin-arm64": "638932561b1e5e93affbe442567c4144795d0993a83022df02d7833495279f5a",
-      "darwin-x64": "6f7c770207bf518f1cabc4ad550a6bf12fb5c746fec468eddc854074ac381e8f",
-      "linux-arm64": "55f205678c8881d586b5803b2e6ae97f19b5667108aa588e94378db22483fa1b",
-      "linux-x64": "5eaba0fb4557c96b6826e1ed9ce0904efb317c9fc43386ad5b7b3282c05446c0"
+      "darwin-arm64": "1a51dde4a747d4cc3cc9fbee744322b805e9b3a99adba50173b248e315e9fa49",
+      "darwin-x64": "7d58d7ce48f795a74f788e567ba132a4acf5585ac0027207115f6814e37cdd46",
+      "linux-arm64": "0ea7c5c16524a07bb5cc70cdd445755ab7183f0b567b6d11fed3af5ad16db69e",
+      "linux-x64": "398d40fa381a524550407d4a868dd9ac055c1e0e6a3c6c6ea28c536b2590fefb"
     }
   },
   "gitleaksVersion": "8.30.1"

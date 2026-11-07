@@ -62,9 +62,13 @@ For a local installation, pass the path shown by `pi list` to `pi remove`. After
 
 Follow [the development setup](docs/development.en.md) to install locked tools and enable repository-local checks. Run `node scripts/check.mjs` before publishing.
 
-The runtime has no package dependencies. Unit tests run with `node --test` without network access. Live search and page reading require a separate Pi integration check.
+The runtime has no package dependencies. After installing the development dependencies, tests run with `node --test` without network access. Live search and page reading require a separate Pi integration check.
 
 ## Documentation and license
 
 - [Behavior and limits](docs/reference.en.md) covers supported targets, processes, configuration, and data sent to external services.
 - [License and distribution](docs/distribution.en.md) explains the AGPL-3.0-or-later license and why binaries are downloaded rather than bundled.
+
+## Acknowledgements
+
+Thanks to [sahenjp](https://github.com/sahenjp) for [RustXNG](https://github.com/sahenjp/RustXNG), which provides this extension's web search and page-reading tools.

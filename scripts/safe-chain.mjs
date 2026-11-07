@@ -38,7 +38,7 @@ export async function resolveSafeChain() {
 
   await access(candidate, constants.X_OK).catch(() => {
     throw new Error(
-      `Safe-chain ${policy.safeChain.version} is required at the standard user installation location`,
+      `Safe-chain ${policy.safeChain.version} is required at the project-versioned installation location`,
     );
   });
 
@@ -48,10 +48,10 @@ export async function resolveSafeChain() {
 export async function validateSafeChainExecutable(candidate, policy) {
   const candidateStat = await lstat(candidate);
   if (candidateStat.isSymbolicLink()) {
-    throw new Error('The standard Safe-chain executable must not be a symbolic link');
+    throw new Error('The project Safe-chain executable must not be a symbolic link');
   }
   if (!candidateStat.isFile()) {
-    throw new Error('The standard Safe-chain executable must be a regular file');
+    throw new Error('The project Safe-chain executable must be a regular file');
   }
 
   const resolved = await realpath(candidate);

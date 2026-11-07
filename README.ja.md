@@ -66,6 +66,10 @@ pi remove git:github.com/hokupod/pi-rustxng
 node --test
 ```
 
-テストは追加パッケージや外部接続を必要としません。実バイナリによる検索とページ取得は、導入後に Pi から別途確認します。
+開発用の依存パッケージを導入した後は、外部接続なしでテストを実行できます。実バイナリによる検索とページ取得は、導入後に Pi から別途確認します。
 
 [動作と制約](docs/reference.md) に対応環境、データ送信、MCP の制約を記載しています。[ライセンスと配布方針](docs/distribution.md) にバイナリ同梱の扱いを記載しています。
+
+## 謝辞
+
+この拡張に Web 検索とページ本文取得の機能を提供する [RustXNG](https://github.com/sahenjp/RustXNG) と、作者の [sahenjp](https://github.com/sahenjp) さんに感謝します。

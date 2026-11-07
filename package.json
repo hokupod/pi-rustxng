@@ -1,6 +1,6 @@
 {
   "name": "pi-rustxng",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "RustXNG web search and page reading through Pi's native MCP support",
   "type": "module",
   "license": "AGPL-3.0-or-later",
@@ -47,5 +47,10 @@
     "eslint": "10.14.0",
     "globals": "17.13.0",
     "prettier": "3.9.10"
+  },
+  "overrides": {
+    "eslint": {
+      "minimatch": "11.0.4"
+    }
   }
 }

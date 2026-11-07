@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtemp, writeFile, chmod, symlink, rm } from 'node:fs/promises';
+import { mkdtemp, writeFile, chmod, symlink, rm, readFile } from 'node:fs/promises';
 import { tmpdir, platform, arch } from 'node:os';
 import { join } from 'node:path';
 import { createHash } from 'node:crypto';
@@ -41,4 +41,25 @@ test('safe-chain refuses unsupported platforms and unexpected version', async (t
   await assert.rejects(validateSafeChainExecutable(executable, policy), /required/);
   policy.safeChain.sha256 = {};
   await assert.rejects(validateSafeChainExecutable(executable, policy), /no approved digest/);
+});
+
+test('project Safe-chain policy and CI use the same isolated release', async () => {
+  const policy = JSON.parse(
+    await readFile(new URL('../toolchain-policy.json', import.meta.url), 'utf8'),
+  );
+  const bootstrap = await readFile(
+    new URL('../.github/actions/setup-checks/action.yml', import.meta.url),
+    'utf8',
+  );
+  const expected = `.local/share/pi-rustxng/tools/safe-chain/${policy.safeChain.version}/safe-chain`;
+  assert.equal(policy.safeChain.relativeExecutable, expected);
+  assert.equal(policy.safeChain.allowEnvironmentOverride, false);
+  assert.ok(bootstrap.includes(`$HOME/${expected}`));
+  assert.ok(
+    bootstrap.includes(
+      `/download/${policy.safeChain.version}/${policy.safeChain.assets['linux-x64']}`,
+    ),
+  );
+  assert.ok(bootstrap.includes(policy.safeChain.sha256['linux-x64']));
+  assert.ok(!bootstrap.includes('$HOME/.safe-chain/bin'));
 });
