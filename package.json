@@ -1,6 +1,6 @@
 {
   "name": "pi-rustxng",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "RustXNG web search and page reading through native MCP in Pi and oh-my-pi",
   "type": "module",
   "license": "AGPL-3.0-or-later",

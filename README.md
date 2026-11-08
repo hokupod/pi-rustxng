@@ -34,22 +34,26 @@ The binary is stored at `~/.local/share/pi-rustxng/v0.30.0/rustxng`. Windows use
 
 ## Install in OMP
 
-OMP support is unreleased. The npm release `pi-rustxng@0.1.1` does not include it. Use a local checkout containing the OMP changes, Node.js 22 or later, and OMP 18.13.2.
+OMP support starts with `pi-rustxng@0.2.0`. Version `0.1.1` does not include it. You need Node.js 22 or later and OMP 18.13.2.
 
-1. Link the checkout using its absolute path.
+1. Once version `0.2.0` is published to npm, install it with:
+
+   ```sh
+   omp plugin install pi-rustxng@0.2.0
+   ```
+
+   To use a local checkout instead, link its absolute path:
 
    ```sh
    omp plugin link /absolute/path/to/pi-rustxng
    ```
 
-   Alternatively, use `omp plugin install /absolute/path/to/pi-rustxng`. These commands do not provide a project-local installation in OMP 18.13.2.
+   You can also use `omp plugin install /absolute/path/to/pi-rustxng`. These commands do not provide a project-local installation in OMP 18.13.2.
 
 2. Start or restart OMP to load the new extension.
 3. Run `/rustxng-install` without arguments to download and verify the managed binary.
 4. Restart OMP after installation, then check `rustxng` in `/mcp`. You can also try `/mcp reload`; restart if it does not restore the connection. Plugin installation and binary installation do not prove that MCP connected.
 5. Ask OMP to search with RustXNG, then read a result in the same connection. The tools are `mcp__rustxng_search` and `mcp__rustxng_read_page`. With `tools.xdev`, OMP may expose them through tool discovery.
-
-After a release containing OMP support is published, install that version with `omp plugin install pi-rustxng@<version>`. Replace `<version>` with the released version, not `0.1.1`.
 
 Loading the OMP extension or starting its MCP launcher does not install RustXNG. The extension provides the installer command; OMP owns the MCP connection through the package's `.mcp.json`. No manual MCP settings changes are required.
 

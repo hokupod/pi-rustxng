@@ -34,9 +34,15 @@ pi install .
 
 ## OMP に導入する
 
-OMP 対応は未公開です。npm の `pi-rustxng@0.1.1` には含まれません。OMP 対応を含む手元の checkout、Node.js 22 以上、OMP 18.13.2 を使います。
+OMP 対応は `pi-rustxng@0.2.0` からで、`0.1.1` には含まれません。Node.js 22 以上と OMP 18.13.2 が必要です。
 
-1. checkout の絶対パスを指定してリンクします。
+1. `0.2.0` が npm に公開された後、次のコマンドで導入します。
+
+   ```sh
+   omp plugin install pi-rustxng@0.2.0
+   ```
+
+   手元の checkout を使う場合は、絶対パスを指定してリンクします。
 
    ```sh
    omp plugin link /absolute/path/to/pi-rustxng
@@ -48,8 +54,6 @@ OMP 対応は未公開です。npm の `pi-rustxng@0.1.1` には含まれませ�
 3. `/rustxng-install` を引数なしで実行し、管理対象バイナリをダウンロードして検証します。
 4. 導入後に OMP を再起動し、`/mcp` で `rustxng` の状態を確認します。`/mcp reload` でも再試行できますが、接続が復旧しなければ再起動します。プラグインやバイナリの導入成功は、MCP の接続成功を意味しません。
 5. OMP に RustXNG での検索を依頼し、同じ接続で結果のページ本文を取得します。ツール名は `mcp__rustxng_search` と `mcp__rustxng_read_page` です。`tools.xdev` 使用時はツール探索を通じて公開される場合があります。
-
-OMP 対応を含むバージョンが公開された後は、`omp plugin install pi-rustxng@<version>` で導入できます。`<version>` には `0.1.1` ではなく、対応を含む公開済みバージョンを指定します。
 
 OMP 拡張のロードや MCP ランチャーの起動だけでは RustXNG を導入しません。拡張は導入コマンドを提供し、OMP はパッケージの `.mcp.json` を使って接続を管理します。MCP 設定の手動変更は不要です。
 

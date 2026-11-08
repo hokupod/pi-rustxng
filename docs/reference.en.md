@@ -54,7 +54,7 @@ The package does not edit user or project settings. An existing server named `ru
 
 ## OMP release and verification limits
 
-OMP support in this checkout is unreleased and is absent from npm version 0.1.1. Installation commands and package loading were reviewed against [OMP 18.13.2 source](https://github.com/can1357/oh-my-pi/tree/e996e1c7ac476f60e02b8ed9764cf30fa8c00a8e). The runtime checks and their limits are recorded below.
+OMP support starts with pi-rustxng 0.2.0 and is absent from version 0.1.1. Installation commands and package loading were reviewed against [OMP 18.13.2 source](https://github.com/can1357/oh-my-pi/tree/e996e1c7ac476f60e02b8ed9764cf30fa8c00a8e). The runtime checks and their limits are recorded below.
 
 ## Data sent to external services
 
