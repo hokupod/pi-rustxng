@@ -36,3 +36,50 @@ test('release publication stays tag-only and OIDC is scoped to publish job', () 
     /publish:[\s\S]*needs: check[\s\S]*environment: release[\s\S]*id-token: write/,
   );
 });
+
+test('release requires both host discovery entries and ships OMP launch files', () => {
+  assert.throws(() => validatePackage({ ...pkg, omp: undefined }), /OMP discovery/);
+  assert.throws(() => validatePackage({ ...pkg, pi: undefined }), /Pi discovery/);
+  const entries = [
+    'package/package.json',
+    'package/LICENSE',
+    'package/README.md',
+    'package/README.ja.md',
+    'package/src/extension.mjs',
+    'package/src/omp-extension.mjs',
+    'package/src/runtime.mjs',
+    'package/src/install-command.mjs',
+    'package/src/install.mjs',
+    'package/src/release.mjs',
+    'package/scripts/install-rustxng.mjs',
+    'package/scripts/launch-mcp.mjs',
+    'package/.mcp.json',
+    'package/config/settings.toml',
+  ];
+  validateEntries(entries);
+  for (const required of [
+    'package/.mcp.json',
+    'package/scripts/launch-mcp.mjs',
+    'package/src/omp-extension.mjs',
+    'package/src/runtime.mjs',
+    'package/src/install-command.mjs',
+  ]) {
+    assert.throws(
+      () => validateEntries(entries.filter((entry) => entry !== required)),
+      /Missing archive entry/,
+    );
+  }
+  const config = JSON.parse(readFileSync(new URL('../.mcp.json', import.meta.url)));
+  assert.deepEqual(config, {
+    mcpServers: {
+      rustxng: {
+        type: 'stdio',
+        command: 'node',
+        args: ['${OMP_PLUGIN_ROOT}/scripts/launch-mcp.mjs'],
+        timeout: 60000,
+      },
+    },
+  });
+  assert.ok(pkg.files.includes('.mcp.json'));
+  assert.ok(pkg.files.includes('scripts/launch-mcp.mjs'));
+});

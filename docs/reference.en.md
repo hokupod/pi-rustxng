@@ -14,7 +14,7 @@ The installer selects an official RustXNG v0.30.0 standalone executable.
 
 Linux arm64 requires glibc 2.39 or later. Linux x64 uses the musl build. The installer rejects other platform and CPU combinations. Inclusion in the manifest does not mean the extension has been tested on that platform.
 
-## Processes and tools
+## Pi processes and tools
 
 The extension registers `rustxng` with Pi using these arguments:
 
@@ -30,7 +30,7 @@ Pi manages process termination, connection state, reconnection, and tool exposur
 
 Tool exposure is `direct`, with a 60-second request timeout. Pi exposes `mcp__rustxng__search` and `mcp__rustxng__read_page`. RustXNG keeps the last 256 search-result URLs in a per-connection allowlist. `read_page` reads URLs from that list. Reconnection clears the list, so a new search is required before reading those pages again.
 
-## Configuration precedence
+## Pi configuration precedence
 
 A `rustxng` entry in a user or project `mcp.json` takes precedence over the extension registration. `/mcp` shows the actual connection and configuration. The extension's fixed command and profile do not apply to that overriding entry.
 
@@ -38,11 +38,29 @@ Shell commands such as `pi mcp list` do not load extensions. The session's `/mcp
 
 If Pi's built-in MCP support is disabled or replaced by another extension, registration might not result in a connection.
 
+## OMP processes and tools
+
+The package has separate `pi` and `omp` extension entries. OMP 18.13.2 selects the `omp` entry, `src/omp-extension.mjs`. This extension registers only `/rustxng-install`; it does not call Pi's `registerMcpServer` API.
+
+OMP reads `.mcp.json` at the package root. The `rustxng` entry starts `node ${OMP_PLUGIN_ROOT}/scripts/launch-mcp.mjs` with `timeout` set to `60000` milliseconds. OMP expands `${OMP_PLUGIN_ROOT}` to the package installation path. Node.js 22 or later must be available as `node`.
+
+The launcher resolves `PI_RUSTXNG_BIN` or the managed v0.30.0 binary using the same validation as Pi. It starts RustXNG with the fixed `standard` profile and bundled `config/settings.toml`. It forwards stdin and stdout, writes diagnostics only to stderr, and stops its child on stdin EOF or a handled termination signal. Forced termination of the launcher is not a guarantee of child cleanup.
+
+OMP owns the connection, reconnection, and tool exposure. Its tools are `mcp__rustxng_search` and `mcp__rustxng_read_page`; `tools.xdev` may expose them through tool discovery. The built-in `web_search` is unchanged. Search and page reading require the same persistent connection. RustXNG's 256-URL allowlist is cleared on reconnection.
+
+A missing or invalid binary makes the launcher exit with an installation or path error. Neither the launcher nor extension loading downloads a binary. Restarting OMP after `/rustxng-install` loads the installed binary. `/mcp reload` requests a runtime reload, but did not restore the plugin connection in the RPC check described below. A new extension requires an OMP restart. `/mcp` reports the actual connection; plugin registration or installer success alone does not establish it.
+
+The package does not edit user or project settings. An existing server named `rustxng` can conflict with the plugin server, so the effective configuration in `/mcp` matters. The plugin's fixed profile applies only when OMP uses the bundled server definition.
+
+## OMP release and verification limits
+
+OMP support in this checkout is unreleased and is absent from npm version 0.1.1. Installation commands and package loading were reviewed against [OMP 18.13.2 source](https://github.com/can1357/oh-my-pi/tree/e996e1c7ac476f60e02b8ed9764cf30fa8c00a8e). The runtime checks and their limits are recorded below.
+
 ## Data sent to external services
 
 RustXNG sends search queries to the external providers in its `standard` profile. Page reading connects to the destination website. Search results and web pages are untrusted input. Instructions in a page are not user authorization. Queries must not contain passwords, API keys, or sensitive personal information.
 
-The extension does not request or store credentials. RustXNG inherits Pi's environment as an ordinary child process. The extension does not sandbox that process.
+The extension does not request or store credentials. RustXNG inherits its host's environment as an ordinary child process. The extension does not sandbox that process.
 
 ## Download verification
 
@@ -62,3 +80,20 @@ On 2026-11-07, the initial implementation was tested on macOS Apple Silicon with
 - Repeating the installer command and RustXNG child-process termination after Pi exited were checked.
 
 The integration check used a test provider with fixed tool calls, not an external LLM. It did not test whether a normal model selects the tools appropriately. Other operating systems and CPUs have not been tested on hardware.
+
+### OMP support verification
+
+On 2026-11-08, the packed artifact was tested on macOS Apple Silicon with Node.js 24.7.0, OMP 18.13.2, Pi 1.4.0, and RustXNG 0.30.0.
+
+- The 22-file npm tarball was extracted and linked into OMP with an isolated home directory. OMP selected `src/omp-extension.mjs`.
+- OMP print and interactive modes returned three search results and 1,000 characters from a result page. A separate connection rejected an unsearched URL.
+- In interactive mode, `/mcp reload` completed, and `/mcp list` then showed the package's `.mcp.json` with `rustxng` connected.
+- The offered tools included the built-in `web_search` and both RustXNG tools together.
+- With no binary installed, the connection failed and RustXNG tools were absent. Startup did not download a binary.
+- `/rustxng-install` in OMP RPC mode downloaded and verified the pinned release in the isolated home directory. Repeating the command reported `Verified`. After restarting OMP, search and page reading succeeded with the managed binary.
+- Pi loaded its entry from the same packed artifact and returned three search results and 1,000 characters of page text.
+- After the checked sessions exited, no tracked launcher or RustXNG child remained alive.
+
+The OMP RPC check reported `No MCP servers configured` for `/mcp list`. `/mcp reload` did not expose the plugin tools in that session. Restarting into print mode succeeded; reload recovery in RPC mode is not verified.
+
+These checks used a provider with fixed responses, not an external LLM. Normal model tool selection, other operating systems, and other CPUs remain untested. The process checks cover the observed exits, not every forced-termination scenario.

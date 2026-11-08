@@ -25,13 +25,18 @@ export function validatePackage(pkg) {
     throw new Error('Unexpected repository');
   if (!pkg.keywords?.includes('pi-package') || pkg.pi?.extensions?.join() !== './src/extension.mjs')
     throw new Error('Missing Pi discovery metadata');
+  if (
+    !pkg.keywords?.includes('omp-package') ||
+    pkg.omp?.extensions?.join() !== './src/omp-extension.mjs'
+  )
+    throw new Error('Missing OMP discovery metadata');
   for (const name of ['preinstall', 'install', 'postinstall', 'prepare', 'prepublishOnly']) {
     if (pkg.scripts?.[name]) throw new Error(`Unexpected lifecycle script: ${name}`);
   }
 }
 export function validateEntries(entries) {
   const allowed =
-    /^(package\/(package\.json|LICENSE|README(?:\.ja)?\.md|src\/[a-z-]+\.mjs|scripts\/install-rustxng\.mjs|config\/settings\.toml|docs\/[a-z.]+\.md))$/;
+    /^(package\/(package\.json|\.mcp\.json|LICENSE|README(?:\.ja)?\.md|src\/[a-z-]+\.mjs|scripts\/(?:install-rustxng|launch-mcp)\.mjs|config\/settings\.toml|docs\/[a-z.]+\.md))$/;
   if (!entries.length || entries.some((entry) => !allowed.test(entry)))
     throw new Error('Unexpected package archive entry');
   for (const required of [
@@ -40,6 +45,11 @@ export function validateEntries(entries) {
     'package/README.md',
     'package/README.ja.md',
     'package/src/extension.mjs',
+    'package/src/omp-extension.mjs',
+    'package/src/runtime.mjs',
+    'package/src/install-command.mjs',
+    'package/.mcp.json',
+    'package/scripts/launch-mcp.mjs',
     'package/src/install.mjs',
     'package/src/release.mjs',
     'package/scripts/install-rustxng.mjs',

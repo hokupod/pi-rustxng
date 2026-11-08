@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "rustxng": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["${OMP_PLUGIN_ROOT}/scripts/launch-mcp.mjs"],
+      "timeout": 60000
+    }
+  }
+}
