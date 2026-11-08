@@ -16,7 +16,7 @@
    - 直接の `npm publish` を許可します。dist-tag 管理の権限は不要です。
 4. npm が求める認証を行い、設定を保存します。長期間使える npm トークンや、GitHub の `NODE_AUTH_TOKEN` は作成しません。
 
-これらのアカウント・権限設定は管理者が行います。ワークフローは設定を変更しません。現在の [npm の Trusted Publishing 資料](https://docs.npmjs.com/trusted-publishers/)では、未使用の信頼設定は、2 日以内の初回公開で検証されないと失効すると説明されています。公開の準備ができてから設定してください。npm の必要条件は Node 22.14 以上と npm 11.5.1 以上です。このワークフローは GitHub-hosted Ubuntu 上で Node 24 と npm 11.18.0 を使います。
+これらのアカウント・権限設定は管理者が行います。ワークフローは設定を変更しません。現在の [npm の Trusted Publishing 資料](https://docs.npmjs.com/trusted-publishers/)では、未使用の信頼設定は、2 日以内の初回公開で検証されないと失効すると説明されています。公開の準備ができてから設定してください。npm の必要条件は Node 22.14 以上と npm 11.5.1 以上です。このワークフローは GitHub-hosted Ubuntu 上で Node 24 と npm 11.21.2 を使います。
 
 ## バージョンを公開する
 

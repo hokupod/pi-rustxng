@@ -20,8 +20,8 @@ runs:
         tar -xzf "$RUNNER_TEMP/gitleaks.tar.gz" -C "$RUNNER_TEMP/gitleaks" gitleaks
         echo "GITLEAKS_BIN=$RUNNER_TEMP/gitleaks/gitleaks" >> "$GITHUB_ENV"
     - shell: bash
-      run: node scripts/safe-chain.mjs npm install --global npm@11.18.0 --ignore-scripts --no-audit --no-fund
+      run: node scripts/safe-chain.mjs npm install --global npm@11.21.2 --ignore-scripts --no-audit --no-fund
     - shell: bash
       run: |
-        test "$(npm --version)" = 11.18.0
+        test "$(npm --version)" = 11.21.2
         node scripts/safe-chain.mjs npm ci --ignore-scripts --no-audit --no-fund
