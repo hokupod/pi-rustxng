@@ -1,5 +1,5 @@
 import { installRustxng } from './install.mjs';
-import { installDirectory } from './release.mjs';
+import { installDirectory, VERSION } from './release.mjs';
 
 export function installCommand({
   env = process.env,
@@ -27,7 +27,7 @@ export function installCommand({
     }
     installing = true;
     try {
-      ctx.ui.notify('Downloading and verifying official RustXNG v0.30.0 from GitHub.', 'info');
+      ctx.ui.notify(`Downloading and verifying official RustXNG ${VERSION} from GitHub.`, 'info');
       const result = await install({ directory: installDirectory(home), platform });
       const message = await onInstalled(result);
       ctx.ui.notify(message, 'info');

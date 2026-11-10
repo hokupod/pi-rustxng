@@ -1,3 +1,4 @@
+import { VERSION } from './release.mjs';
 import { resolveBinary, launchSpec } from './runtime.mjs';
 import { installCommand } from './install-command.mjs';
 export { resolveBinary } from './runtime.mjs';
@@ -36,7 +37,7 @@ export default function rustxng(
     if (setupError) ctx.ui.notify(setupError, 'warning');
   });
   pi.registerCommand('rustxng-install', {
-    description: 'Download and verify official RustXNG v0.30.0, then register its MCP server',
+    description: `Download and verify official RustXNG ${VERSION}, then register its MCP server`,
     handler: installCommand({
       env,
       home,

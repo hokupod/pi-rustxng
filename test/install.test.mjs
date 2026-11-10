@@ -5,7 +5,7 @@ import { mkdtemp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promis
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { installRelease, installRustxng, verifyBytes, verifySidecar } from '../src/install.mjs';
-import { selectArtifact, RELEASE_URL, TARGETS } from '../src/release.mjs';
+import { selectArtifact, RELEASE_URL, TARGETS, VERSION } from '../src/release.mjs';
 
 const bytes = Buffer.from('fixture executable');
 const artifact = {
@@ -32,7 +32,7 @@ async function fixture(t) {
   t.after(() => rm(root, { recursive: true, force: true }));
   return {
     root,
-    directory: join(root, 'v0.30.0'),
+    directory: join(root, VERSION),
     artifact,
     platform: process.platform,
     legalFiles: [legalArtifact],
@@ -78,7 +78,7 @@ test('installs verified files together and reuses a complete install without net
     },
   });
   assert.equal(repeated.reused, true);
-  assert.deepEqual(await readdir(options.root), ['v0.30.0']);
+  assert.deepEqual(await readdir(options.root), [VERSION]);
 });
 
 test('failed download cleans staging and can be retried', async (t) => {

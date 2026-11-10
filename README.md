@@ -15,7 +15,7 @@ You need Node.js 22 or later and a Pi version that provides `pi.registerMcpServe
    ```
 
 2. Start Pi, or run `/reload` in an existing session.
-3. Run `/rustxng-install` in Pi without arguments. This command downloads and verifies RustXNG v0.30.0, LICENSE, and NOTICE from the official GitHub release.
+3. Run `/rustxng-install` in Pi without arguments. This command downloads and verifies RustXNG v0.31.1, LICENSE, and NOTICE from the official GitHub release.
 4. Open `/mcp` and check the `rustxng` connection. A registration notification does not guarantee a successful connection.
 5. Ask Pi to search with RustXNG and read a page from the results.
 
@@ -30,16 +30,16 @@ node scripts/install-rustxng.mjs
 pi install .
 ```
 
-The binary is stored at `~/.local/share/pi-rustxng/v0.30.0/rustxng`. Windows uses `rustxng.exe` in the same `.local/share/pi-rustxng/v0.30.0` directory under your home directory.
+The binary is stored at `~/.local/share/pi-rustxng/v0.31.1/rustxng`. Windows uses `rustxng.exe` in the same `.local/share/pi-rustxng/v0.31.1` directory under your home directory.
 
 ## Install in OMP
 
 OMP support starts with `pi-rustxng@0.2.0`. Version `0.1.1` does not include it. You need Node.js 22 or later and OMP 18.13.2.
 
-1. Once version `0.2.0` is published to npm, install it with:
+1. Install version `0.2.1` from npm:
 
    ```sh
-   omp plugin install pi-rustxng@0.2.0
+   omp plugin install pi-rustxng@0.2.1
    ```
 
    To use a local checkout instead, link its absolute path:
@@ -72,7 +72,9 @@ While `PI_RUSTXNG_BIN` is set, `/rustxng-install` does not install the managed b
 
 ## Update or remove
 
-RustXNG is pinned to v0.30.0. There is no automatic update or `postinstall` script. Running `/rustxng-install` again verifies and reuses the existing binary, LICENSE, and NOTICE.
+RustXNG is pinned to v0.31.1. There is no automatic update or `postinstall` script. Running `/rustxng-install` again verifies and reuses the existing binary, LICENSE, and NOTICE.
+
+After updating the extension from an older RustXNG pin, restart the host, run `/rustxng-install`, then restart again and check `/mcp`. The new version uses its own directory; older versions are left untouched.
 
 The installer does not overwrite an incomplete or modified installation. Exit Pi and OMP, move the version directory shown in the error aside, and run the installer again.
 
@@ -82,7 +84,7 @@ To remove the Pi extension, run:
 pi remove git:github.com/hokupod/pi-rustxng
 ```
 
-For a local installation, pass the path shown by `pi list` to `pi remove`. After exiting both hosts, remove `~/.local/share/pi-rustxng/v0.30.0` if you no longer need the binary.
+For a local installation, pass the path shown by `pi list` to `pi remove`. After exiting both hosts, remove `~/.local/share/pi-rustxng/v0.31.1` if you no longer need the binary.
 
 ## Development
 

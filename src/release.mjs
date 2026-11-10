@@ -1,35 +1,35 @@
 import { homedir } from 'node:os';
 import { join } from 'node:path';
 
-export const VERSION = 'v0.30.0';
+export const VERSION = 'v0.31.1';
 export const RELEASE_URL = `https://github.com/sahenjp/RustXNG/releases/download/${VERSION}`;
 
 const artifact = (name, size, sha256) => Object.freeze({ name, size, sha256 });
 export const TARGETS = Object.freeze({
   'darwin-arm64': artifact(
-    'rustxng-v0.30.0-aarch64-apple-darwin',
-    28637808,
-    '53ad48ba3c98fad64b57f9fcc66b984ea8cb5ff7363991b98dbcc7d86024aece',
+    'rustxng-v0.31.1-aarch64-apple-darwin',
+    29099648,
+    '3d8df7e68574adbcf18422075272016856392df6c606d65b22c6526dcbe74db5',
   ),
   'darwin-x64': artifact(
-    'rustxng-v0.30.0-x86_64-apple-darwin',
-    30558896,
-    'ac7b4e4ca66c6f980d64d4349bb4c1b72dad1f485f24f06536dae9a0a9526273',
+    'rustxng-v0.31.1-x86_64-apple-darwin',
+    31132592,
+    'cf12bc196955c5bdd90098f4b71c3119f1acd6477e4f00cbe73780449f9a5cba',
   ),
   'linux-x64': artifact(
-    'rustxng-v0.30.0-x86_64-unknown-linux-musl',
-    33647600,
-    '718ca5e9f74340a016b32b6e3754bec0625f617cbd1b5f076297df1aa8762eb2',
+    'rustxng-v0.31.1-x86_64-unknown-linux-musl',
+    34259168,
+    '18725ba33f1d36d85c4abd2661c21c3698f4775760592eba074283881505db97',
   ),
   'linux-arm64': artifact(
-    'rustxng-v0.30.0-aarch64-unknown-linux-gnu',
-    32194440,
-    '50efe17dabb81f3c3b515c80902cc1e15091dd64bc2e00e9000b3a11d6460eed',
+    'rustxng-v0.31.1-aarch64-unknown-linux-gnu',
+    32731840,
+    '4887547a1ff1ab50c25030c93165364fb2b9647cd1d24b978ab33b7abdf5f38c',
   ),
   'win32-x64': artifact(
-    'rustxng-v0.30.0-x86_64-pc-windows-msvc.exe',
-    30659072,
-    '75c392494bfe36002ed01dba8d56a365e98503cfe515786144368e6f0b45f9f8',
+    'rustxng-v0.31.1-x86_64-pc-windows-msvc.exe',
+    31232512,
+    'a509798f040722db4a3df9eebb3551437c69189ed0003bb2a0b62bf749cf6775',
   ),
 });
 export const LEGAL_FILES = Object.freeze([
