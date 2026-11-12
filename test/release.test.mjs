@@ -16,7 +16,7 @@ import piExtension from '../src/extension.mjs';
 import ompExtension from '../src/omp-extension.mjs';
 
 test('release metadata consistently selects the pinned version and verified artifacts', () => {
-  assert.equal(VERSION, 'v0.31.1');
+  assert.equal(VERSION, 'v0.31.2');
   assert.equal(RELEASE_URL, `https://github.com/sahenjp/RustXNG/releases/download/${VERSION}`);
   assert.equal(
     installDirectory('/fixture'),
@@ -63,7 +63,7 @@ test('both host installer descriptions and notifications use the pinned version'
 test('managed binary resolution never falls back to the old pinned installation', async (t) => {
   const home = await mkdtemp(join(tmpdir(), 'pi-rustxng-upgrade-'));
   t.after(() => rm(home, { recursive: true, force: true }));
-  const oldDirectory = join(home, '.local', 'share', 'pi-rustxng', 'v0.30.0');
+  const oldDirectory = join(home, '.local', 'share', 'pi-rustxng', 'v0.31.1');
   const oldBinary = join(oldDirectory, binaryName());
   await mkdir(oldDirectory, { recursive: true });
   await writeFile(oldBinary, 'old binary fixture');

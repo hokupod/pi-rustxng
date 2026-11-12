@@ -15,7 +15,7 @@ Node.js 22 以上と、`pi.registerMcpServer` を提供する Pi が必要です
    ```
 
 2. Pi を起動します。起動済みなら `/reload` を実行します。
-3. Pi の入力欄で `/rustxng-install` を実行します。引数はありません。この操作で公式 GitHub release から RustXNG v0.31.1、LICENSE、NOTICE をダウンロードし、検証します。
+3. Pi の入力欄で `/rustxng-install` を実行します。引数はありません。この操作で公式 GitHub release から RustXNG v0.31.2、LICENSE、NOTICE をダウンロードし、検証します。
 4. `/mcp` で `rustxng` の接続状態を確認します。登録完了の通知は接続成功を保証しません。
 5. Pi に「RustXNG で Rust の公式ドキュメントを検索して、結果のページ本文を読んで」と依頼します。
 
@@ -30,16 +30,16 @@ node scripts/install-rustxng.mjs
 pi install .
 ```
 
-バイナリの配置先は `~/.local/share/pi-rustxng/v0.31.1/rustxng` です。Windows のファイル名は `rustxng.exe` です。Windows でもホームディレクトリ以下の同じ `.local/share/pi-rustxng/v0.31.1` を使います。
+バイナリの配置先は `~/.local/share/pi-rustxng/v0.31.2/rustxng` です。Windows のファイル名は `rustxng.exe` です。Windows でもホームディレクトリ以下の同じ `.local/share/pi-rustxng/v0.31.2` を使います。
 
 ## OMP に導入する
 
 OMP 対応は `pi-rustxng@0.2.0` からで、`0.1.1` には含まれません。Node.js 22 以上と OMP 18.13.2 が必要です。
 
-1. 次のコマンドで npm から `0.2.1` を導入します。
+1. 次のコマンドで npm から `0.2.2` を導入します。
 
    ```sh
-   omp plugin install pi-rustxng@0.2.1
+   omp plugin install pi-rustxng@0.2.2
    ```
 
    手元の checkout を使う場合は、絶対パスを指定してリンクします。
@@ -72,7 +72,7 @@ PI_RUSTXNG_BIN="/absolute/path with spaces/rustxng" omp
 
 ## 更新と削除
 
-RustXNG は v0.31.1 に固定しています。自動更新や `postinstall` はありません。`/rustxng-install` の再実行は既存のバイナリと LICENSE、NOTICE を再検証して再利用します。
+RustXNG は v0.31.2 に固定しています。自動更新や `postinstall` はありません。`/rustxng-install` の再実行は既存のバイナリと LICENSE、NOTICE を再検証して再利用します。
 
 以前の固定バージョンから拡張を更新した場合は、ホストを再起動して `/rustxng-install` を実行し、もう一度再起動して `/mcp` を確認します。新しいバージョンは専用ディレクトリに導入され、古いバージョンはそのまま残ります。
 
@@ -84,7 +84,7 @@ Pi の拡張を削除します。
 pi remove git:github.com/hokupod/pi-rustxng
 ```
 
-ローカルパスから導入した場合は、`pi list` の該当パスを `pi remove` に渡します。両ホストを終了後、不要になった `~/.local/share/pi-rustxng/v0.31.1` を削除するとバイナリも削除できます。
+ローカルパスから導入した場合は、`pi list` の該当パスを `pi remove` に渡します。両ホストを終了後、不要になった `~/.local/share/pi-rustxng/v0.31.2` を削除するとバイナリも削除できます。
 
 ## 開発時の確認
 

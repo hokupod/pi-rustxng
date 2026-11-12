@@ -2,7 +2,7 @@
 
 ## Supported targets
 
-The installer selects an official RustXNG v0.31.1 standalone executable.
+The installer selects an official RustXNG v0.31.2 standalone executable.
 
 | Platform            | Official artifact target  |
 | ------------------- | ------------------------- |
@@ -44,7 +44,7 @@ The package has separate `pi` and `omp` extension entries. OMP 18.13.2 selects t
 
 OMP reads `.mcp.json` at the package root. The `rustxng` entry starts `node ${OMP_PLUGIN_ROOT}/scripts/launch-mcp.mjs` with `timeout` set to `60000` milliseconds. OMP expands `${OMP_PLUGIN_ROOT}` to the package installation path. Node.js 22 or later must be available as `node`.
 
-The launcher resolves `PI_RUSTXNG_BIN` or the managed v0.31.1 binary using the same validation as Pi. It starts RustXNG with the fixed `standard` profile and bundled `config/settings.toml`. It forwards stdin and stdout, writes diagnostics only to stderr, and stops its child on stdin EOF or a handled termination signal. Forced termination of the launcher is not a guarantee of child cleanup.
+The launcher resolves `PI_RUSTXNG_BIN` or the managed v0.31.2 binary using the same validation as Pi. It starts RustXNG with the fixed `standard` profile and bundled `config/settings.toml`. It forwards stdin and stdout, writes diagnostics only to stderr, and stops its child on stdin EOF or a handled termination signal. Forced termination of the launcher is not a guarantee of child cleanup.
 
 OMP owns the connection, reconnection, and tool exposure. Its tools are `mcp__rustxng_search` and `mcp__rustxng_read_page`; `tools.xdev` may expose them through tool discovery. The built-in `web_search` is unchanged. Search and page reading require the same persistent connection. RustXNG's 256-URL allowlist is cleared on reconnection.
 
@@ -108,3 +108,14 @@ On 2026-11-10, the updated checkout was tested on macOS Apple Silicon with Node.
 - Formatting, lint, all 48 unit tests, the Git history secret scan, and a separate scan of the uncommitted diff passed.
 
 The integration checks used fixed tool calls without an external LLM. Interactive reload, normal model tool selection, and other operating systems and CPUs were not retested for this update. The user's regular host settings and managed installation were not changed by these isolated checks.
+
+### RustXNG 0.31.2 verification
+
+On 2026-11-12, the updated checkout and packed artifact were tested on macOS Apple Silicon with Node.js 24.22.3, npm 11.21.2, Pi 1.4.0, OMP 18.13.2, and RustXNG 0.31.2.
+
+- All five supported official binaries, checksum sidecars, LICENSE, and NOTICE were downloaded. Sizes and SHA-256 hashes matched GitHub asset metadata and the release manifest. LICENSE and NOTICE were unchanged.
+- Installation and offline reuse passed for all five artifact selections using the verified downloads. Only the macOS Apple Silicon binary was executed.
+- Both hosts used the managed 0.31.2 binary through native MCP from the checkout and packed artifact. Each returned three search results and read a result page (628 characters in Pi and 1,000 in OMP). New connections rejected unsearched URLs, and no tracked launcher or RustXNG child remained after exit.
+- Formatting, lint, all 49 unit tests, the Git history secret scan, and separate scans of the uncommitted diff and extracted package passed. CI and release jobs now select Node.js 24.22.3 or a later Node.js 24 release.
+
+Some upstream engines timed out, and an initial domain-filtered query returned no results. A broader public query completed search and page reading in both hosts. These checks do not guarantee every external engine's availability. They used fixed tool calls without an external LLM; interactive reload, normal model tool selection, and other operating systems and CPUs were not retested. Regular host settings and managed installations were unchanged.

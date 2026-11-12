@@ -16,7 +16,8 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
         with:
-          node-version: '24'
+          node-version: '>=24.22.3 <25'
+          check-latest: true
           package-manager-cache: false
       - uses: ./.github/actions/setup-checks
       - run: node scripts/check.mjs

@@ -1,6 +1,6 @@
 # Set up development checks
 
-The runtime has no package dependencies. Development uses Node.js 24 or later, Safe-chain 1.5.27, and Gitleaks 8.30.1. Tool versions and Safe-chain hashes are recorded in [toolchain-policy.json](../toolchain-policy.json).
+The runtime has no package dependencies. Development uses Node.js 24.22.3 or a later Node.js 24 release, Safe-chain 1.5.27, and Gitleaks 8.30.1. Tool versions and Safe-chain hashes are recorded in [toolchain-policy.json](../toolchain-policy.json).
 
 ## Prepare the tools
 

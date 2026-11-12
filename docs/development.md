@@ -1,6 +1,6 @@
 # 開発時のチェック
 
-実行時のパッケージ依存はありません。開発には Node.js 24 以上、Safe-chain 1.5.27、Gitleaks 8.30.1 を使います。ツールのバージョンと Safe-chain のハッシュは [toolchain-policy.json](../toolchain-policy.json) に記録しています。
+実行時のパッケージ依存はありません。開発には Node.js 24.22.3 以降の 24 系、Safe-chain 1.5.27、Gitleaks 8.30.1 を使います。ツールのバージョンと Safe-chain のハッシュは [toolchain-policy.json](../toolchain-policy.json) に記録しています。
 
 ## ツールを準備する
 

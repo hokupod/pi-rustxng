@@ -16,7 +16,7 @@ The workflows are prepared, but this change does not publish a package or config
    - Allow direct `npm publish`. Dist-tag management is not needed.
 4. Save the configuration using npm's required authentication. Do not create a long-lived npm token or add `NODE_AUTH_TOKEN` to GitHub.
 
-These are account and permission changes for a maintainer to perform. The workflow does not make them. Current [npm trusted-publishing documentation](https://docs.npmjs.com/trusted-publishers/) says an unused trust configuration expires unless the first publish validates it within two days. Configure trust when you are ready to release. npm requires at least Node 22.14 and npm 11.5.1; this workflow uses Node 24 and npm 11.21.2 on GitHub-hosted Ubuntu.
+These are account and permission changes for a maintainer to perform. The workflow does not make them. Current [npm trusted-publishing documentation](https://docs.npmjs.com/trusted-publishers/) says an unused trust configuration expires unless the first publish validates it within two days. Configure trust when you are ready to release. npm requires at least Node 22.14 and npm 11.5.1; this workflow uses Node 24.22.3 or a later Node.js 24 release and npm 11.21.2 on GitHub-hosted Ubuntu.
 
 ## Release a version
 

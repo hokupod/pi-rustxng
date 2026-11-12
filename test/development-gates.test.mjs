@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtemp, writeFile, chmod, mkdir, rm } from 'node:fs/promises';
+import { mkdtemp, readFile, writeFile, chmod, mkdir, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -76,4 +76,20 @@ test('hook setup handles repositories without template hooks', async (t) => {
   for (const name of ['pre-commit', 'pre-push'])
     await writeFile(join(root, '.githooks', name), '#!/bin/sh\nexit 0\n');
   assert.equal(run(hooksInstaller, root, [executable]).status, 0);
+});
+
+test('CI and release jobs require the patched Node.js 24 baseline', async () => {
+  for (const name of ['ci', 'release']) {
+    const workflow = await readFile(
+      new URL(`../.github/workflows/${name}.yml`, import.meta.url),
+      'utf8',
+    );
+    const nodeSteps = workflow.split('      - uses: actions/setup-node@').slice(1);
+    assert.equal(nodeSteps.length, name === 'ci' ? 1 : 2);
+    for (const nodeStep of nodeSteps) {
+      const step = nodeStep.split('\n      - ')[0];
+      assert.match(step, /node-version: '>=24\.22\.3 <25'/);
+      assert.match(step, /check-latest: true/);
+    }
+  }
 });
